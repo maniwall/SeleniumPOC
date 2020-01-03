@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="2" passed="2">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="709814" started-at="2020-01-03T11:50:14Z" finished-at="2020-01-03T12:02:04Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="709814" started-at="2020-01-03T11:50:14Z" finished-at="2020-01-03T12:02:04Z">
+      <class name="com.csc.selenium.workflows.PhysicalIssues">
+        <test-method status="PASS" signature="driverSetup()[pri:0, instance:com.csc.selenium.workflows.PhysicalIssues@29774679]" name="driverSetup" is-config="true" duration-ms="252" started-at="2020-01-03T11:50:14Z" finished-at="2020-01-03T11:50:15Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- driverSetup -->
+        <test-method status="PASS" signature="loginSetup()[pri:0, instance:com.csc.selenium.workflows.PhysicalIssues@29774679]" name="loginSetup" is-config="true" duration-ms="98614" started-at="2020-01-03T11:50:15Z" finished-at="2020-01-03T11:51:53Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginSetup -->
+        <test-method status="PASS" signature="physicalIssues_Other_Wire_Test()[pri:0, instance:com.csc.selenium.workflows.PhysicalIssues@29774679]" name="physicalIssues_Other_Wire_Test" duration-ms="271927" started-at="2020-01-03T11:51:53Z" finished-at="2020-01-03T11:56:25Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- physicalIssues_Other_Wire_Test -->
+        <test-method status="PASS" signature="closeDriver()[pri:0, instance:com.csc.selenium.workflows.PhysicalIssues@29774679]" name="closeDriver" is-config="true" duration-ms="5434" started-at="2020-01-03T11:56:25Z" finished-at="2020-01-03T11:56:31Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- closeDriver -->
+        <test-method status="PASS" signature="loginSetup()[pri:0, instance:com.csc.selenium.workflows.PhysicalIssues@29774679]" name="loginSetup" is-config="true" duration-ms="56045" started-at="2020-01-03T11:56:31Z" finished-at="2020-01-03T11:57:27Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginSetup -->
+        <test-method status="PASS" signature="physicalIssues_Other_Wire_Test2()[pri:0, instance:com.csc.selenium.workflows.PhysicalIssues@29774679]" name="physicalIssues_Other_Wire_Test2" duration-ms="272502" started-at="2020-01-03T11:57:27Z" finished-at="2020-01-03T12:01:59Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- physicalIssues_Other_Wire_Test2 -->
+        <test-method status="PASS" signature="closeDriver()[pri:0, instance:com.csc.selenium.workflows.PhysicalIssues@29774679]" name="closeDriver" is-config="true" duration-ms="5010" started-at="2020-01-03T12:01:59Z" finished-at="2020-01-03T12:02:04Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- closeDriver -->
+      </class> <!-- com.csc.selenium.workflows.PhysicalIssues -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

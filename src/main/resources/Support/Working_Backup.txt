@@ -1,0 +1,310 @@
+/* Working file */
+
+package com.csc.selenium.test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+
+public class CSCSeleniumIntializer {
+
+	private static Map<String, WebElement> elements = new HashMap<>();
+
+	private static Map<String, String> headers = new HashMap<>();
+
+	private static WebDriver driver;
+
+	private static WebDriver physicalFrameDriver;
+
+	public static List<WebElement> nextElements = new ArrayList<>();
+
+	public static List<WebElement> lblHeaderElements = new ArrayList<>();
+
+	public static ExtentReports extent;
+
+	@BeforeTest
+	public static void setup() throws InterruptedException {
+
+		// System.setProperty("webdriver.gecko.driver",
+		// "C:\\Users\\AC56975\\Data\\Oxygen_workspace\\SeleniumPOC\\src\\main\\resources\\Gecko\\geckodriver.exe");
+
+		ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("extentReports.html");
+
+		extent = new ExtentReports();
+		extent.attachReporter(htmlReporter);
+
+		String sourcePath = System.getProperty("user.dir");
+
+		// PATH for Chrome Drivers:
+		// chromedriver.storage.googleapis.com/index.html?path=2.36/
+		System.setProperty("webdriver.chrome.driver",
+				sourcePath + "/src/main/resources/Drivers/ChromeDriver/chromedriver.exe");
+
+		/* Session Creation - START */
+
+		driver = new ChromeDriver();
+
+		driver.get("https://qclinksmpv.qa.motive.com/csc/");
+
+		driver.findElement(By.id("j_username")).sendKeys("cvfnz_manikanta");
+		driver.findElement(By.id("j_password")).sendKeys("Manikanta@123");
+
+		driver.findElement(By.xpath("//span[text()='Log On']")).click();
+		driver.findElement(By.id("subscriberid")).sendKeys("3033370006");
+		driver.findElement(By.id("rxSessionId")).sendKeys("33303537");
+
+		driver.findElement(By.xpath("//span[text()='Create Session']")).click();
+
+		Thread.sleep(60000);
+
+		/* Session Creation - END */
+	}
+
+	@Test
+	public static void physicalIssues_Other_Wire_Test() throws InterruptedException {
+
+		ExtentTest test = extent.createTest("CSC_Physical_Issues_01", "Sample Description");
+
+		test.info("Clicking on POTS Image");
+
+		/* Clicking on POTS Image - START */
+
+		driver.findElement(By.xpath("//img[@id='POTS_image']")).click();
+		driver.findElement(By.xpath("//strong[contains(text(),'Physical Issues')]")).click();
+
+		Thread.sleep(60000);
+
+		// WebDriver physicalFrame = new WebDriverWait(driver, 70)
+		// .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("dashboardIframe-Physical_Issues"));
+
+		// physicalFrame.findElement(By.xpath(
+		// "//input[@name='physicalVoice'][following-sibling::text()[position()=1][contains(.,
+		// 'Other damage')]]"))
+		// .click();
+
+		/* Clicking on POTS Image - END */
+
+		test.info("CSC Physical Issues Testing Started!!");
+		test.info("Testing --- Accordian1");
+
+		/* Physical Issues Frame - START */
+
+		WebElement physicalFrameElement = driver.findElement(By.id("dashboardIframe-Physical_Issues"));
+		physicalFrameDriver = driver.switchTo().frame(physicalFrameElement);
+
+		physicalFrameDriver.findElement(By.xpath(
+				"//input[@name='physicalVoice'][following-sibling::text()[position()=1][contains(., 'Other damage')]]"))
+				.click();
+
+		nextElements = physicalFrameDriver.findElements(By.xpath("//div[@id='acInput']/input"));
+
+		/* Step1 START */
+
+		String header1 = getHeader(1);
+		String header1_Required = "Select type of wiring or equipment (physical) problem";
+
+		if (header1.equals(header1_Required)) {
+
+			test.log(Status.INFO, "Accordian 1 Headers are Correct!!");
+		} else {
+
+			test.fail("Accordian 1 Headers are Incorrect!!");
+		}
+
+		elements.put("Physical_WireType_Next_01", nextElements.get(0));
+		elements.get("Physical_WireType_Next_01").click();
+
+		/* Step1 END */
+
+		Thread.sleep(30000);
+		test.info("Testing --- Accordian2");
+
+		/* Step2 START */
+
+		String header2 = getHeader(2);
+		String header2_Required = "Is problem on customer's property?";
+
+		if (header2.equals(header2_Required)) {
+
+			test.log(Status.INFO, "Accordian 2 Headers are Correct!!");
+		} else {
+
+			test.fail("Accordian 2 Headers are Incorrect!!");
+		}
+
+		nextElements = physicalFrameDriver.findElements(By.xpath("//div[@id='acInput']/input"));
+		elements.put("Physical_Other_Customer_Problem_Next_02", nextElements.get(nextElements.size() - 1));
+
+		Select otherDamageSelect = new Select(physicalFrameDriver.findElement(By.id("otherdamage")));
+		otherDamageSelect.selectByIndex(3);
+
+		elements.get("Physical_Other_Customer_Problem_Next_02").click();
+
+		/* Step2 END */
+
+		Thread.sleep(30000);
+		test.info("Testing --- Accordian3");
+
+		/* Step3 START */
+
+		String header3 = getHeader(3);
+		String header3_Required = "Advice to agent";
+
+		if (header3.equals(header3_Required)) {
+
+			test.log(Status.INFO, "Accordian 3 Headers are Correct!!");
+		} else {
+
+			test.fail("Accordian 3 Headers are Incorrect!!");
+		}
+
+		String paragraph1_Required = "Create a Message Report (MR) ticket using Smart Desktop or existing department processes.";
+		String paragraph2_Required = "The workflow has ended. To run the workflow again, click the start Restart Workflow button.";
+
+		String paragraph1 = physicalFrameDriver.findElement(By.xpath("//div[@class='content form info']/p[1]"))
+				.getText();
+		String paragraph2 = physicalFrameDriver.findElement(By.xpath("//div[@class='content form info']/p[2]"))
+				.getText();
+
+		if (paragraph1.equals(paragraph1_Required)) {
+
+			test.log(Status.INFO, "Accordian 3 ---- Paragraph 1 content is Correct!!");
+		} else {
+
+			test.fail("Accordian 3 ---- Paragraph 1 content is Incorrect!!");
+		}
+
+		if (paragraph2.equals(paragraph2_Required)) {
+
+			test.log(Status.INFO, "Accordian 3 ---- Paragraph 2 content is Correct!!");
+		} else {
+
+			test.fail("Accordian 3 ---- Paragraph 2 content is Incorrect!!");
+		}
+
+		nextElements = physicalFrameDriver.findElements(By.xpath("//div[@id='acInput']/input"));
+		elements.put("Physical_Other_Advice_Agent_Next_03", nextElements.get(nextElements.size() - 1));
+		elements.get("Physical_Other_Advice_Agent_Next_03").click();
+
+		/* Step3 END */
+
+		Thread.sleep(30000);
+		test.info("Testing --- Accordian4");
+
+		/* Step4 START */
+
+		String header4 = getHeader(4);
+		String header4_Required = "Done";
+
+		if (header4.equals(header4_Required)) {
+
+			test.log(Status.INFO, "Accordian 4 Headers are Correct!!");
+		} else {
+
+			test.fail("Accordian 4 Headers are Incorrect!!");
+		}
+
+		// String paragraph3 =
+		// physicalFrameDriver.findElement(By.xpath("\"//div[@class='content
+		// done']\"")).getText();
+		//
+		// String paragraph3_Required = "The workflow has ended. To run the workflow
+		// again, click the Restart Workflow button.";
+
+		/* Step4 END */
+
+		Thread.sleep(30000);
+
+		test.info("Testing --- Accordian4");
+
+		/* Physical Issues Frame - END */
+
+		test.info("Ending session");
+
+		physicalFrameDriver.switchTo().defaultContent();
+
+		driver.findElement(By.cssSelector("a[title='End this session']")).click();
+		// driver.findElement(By.linkText("End Session")).click();
+		// driver.findElement(By.id("appLink_endsession")).click();
+
+		driver.findElement(By.xpath("//span[text()='OK']")).click();
+
+		Thread.sleep(30000);
+
+		/* Call Warp-up Frame - START */
+
+		WebElement callWrapUpFrameElement = driver.findElement(By.tagName("iframe"));
+
+		WebDriver callWrapUpFrameDriver = driver.switchTo().frame(callWrapUpFrameElement);
+
+		callWrapUpFrameDriver.findElement(By.id("pots")).click();
+
+		Thread.sleep(30000);
+
+		String result = callWrapUpFrameDriver
+				.findElement(By.xpath("//div[@id='ticketDetail_div']/table[1]/tr[3]/td[2]")).getText();
+
+		if (result.equals("N/A")) {
+
+			test.log(Status.INFO, "Handle Code is as expected");
+		} else {
+
+			test.fail("Handle Code is not as expected");
+		}
+
+		nextElements = callWrapUpFrameDriver.findElements(By.xpath("//div[@id='acInput']/input"));
+
+		elements.put("Physical_Other_Call_Warup_Next_04", nextElements.get(nextElements.size() - 1));
+
+		elements.get("Physical_Other_Call_Warup_Next_04").click();
+
+		System.out.println("Before CSC close!!" + result);
+
+		/* Call Warp-up Frame - END */
+
+	}
+
+	@AfterTest
+	public static void tearDown() {
+		extent.flush();
+		driver.close();
+		driver.quit();
+	}
+
+	/*
+	 * public static void main(String[] args) throws InterruptedException {
+	 * 
+	 * setup(); physicalIssues_Other_Wire_Test(); tearDown();
+	 * 
+	 * }
+	 */
+
+	public static String getHeader(int stepNumber) {
+
+		lblHeaderElements = physicalFrameDriver.findElements(By.id("lblHeader"));
+		String header = lblHeaderElements.get(lblHeaderElements.size() - 1).getText();
+
+		headers.put("accordian_number_" + stepNumber, header);
+
+		// System.out.println("Accordian number :::: " + stepNumber + " Header :::: " +
+		// header);
+
+		return header;
+	}
+
+}
